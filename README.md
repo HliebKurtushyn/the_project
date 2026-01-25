@@ -7,7 +7,7 @@ _Потрібно мати встановлений Python 3.8 або новіш
 
 1. Склонуйте репозиторій:
    ```
-   git clone <url>
+   git clone https://github.com/HliebKurtushyn/the_project.git
    ```
 2. Перейдіть у директорію проєкту:
    ```

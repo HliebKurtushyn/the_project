@@ -34,22 +34,38 @@ the_project/
     
     ├── static/                  # CSS / JS / картинки
     │   └── css/
-    │        └── account/
+    │       └── account/
     │           └── styles.css
     │   └── js/
-    │        └── account/
+    │       └── account/
     │            └── scripts.js
     
     ├── docs/                    # Документація
-    │   ├── overview.md          # Ідея проєкту, задум
     │   ├── architecture.md      # Як все влаштовано технічно
+    │   ├── for_team.md          # Інформація для команди
+    │   ├── overview.md          # Ідея проєкту, задум
     │   ├── roles.md             # Хто за що відповідає
-    │   ├── workflow.md          # Правила для проекту (git коміти, стиль і т.д.)
     │   └── trash.md             # Можна писати що хочеш. Нотатки, чорновик.. взагалі всеодно
+    │   ├── workflow.md          # Правила для проекту (git коміти, стиль і т.д.)
 ```
 
+## Моделі
+CustomUser (core/models.py) (WIP!!!):
+```python
+class CustomUser(models.Model):
+    username = models.CharField(max_length=150, unique=True)
+    email = models.EmailField(unique=True)
+    date_joined = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.username
+```
+
+
+## Інше
+- Використовується система шаблонів Jinja2.
+
+
 ## Пояснення
-- `CustomUser` модель знаходиться в апці `core/models.py`.
 - ...
 - В майбутньому буде доданий Docker файл для контейнеризації проєкту.
-- 
