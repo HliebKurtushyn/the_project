@@ -46,4 +46,3 @@ _Потрібно мати встановлений Python 3.8 або новіш
 - [Для команди](docs/for_team.md)
 - [Workflow](docs/workflow.md)
 - [Trash (чорновик)](docs/trash.md)
-- [Ролі в команді](docs/roles.md)
