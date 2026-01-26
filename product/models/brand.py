@@ -1,5 +1,6 @@
 from django.db import models
 
+# WIP
 class Brand(models.Model):
     name = models.CharField(max_length=100)
     ...
