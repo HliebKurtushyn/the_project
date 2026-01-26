@@ -8,7 +8,7 @@ the_project/
     ├── .gitignore               
     ├── requirements.txt  
            
-    ├── core/                    # Приклад апки (буде багато)
+    ├── core/                    
     │   ├── __init__.py
     │   ├── admin.py
     │   ├── apps.py
@@ -19,6 +19,16 @@ the_project/
     │       └── __init__.py
     
     ├── account/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── views.py
+    │   ├── urls.py
+    │   └── migrations/
+    │       └── __init__.py
+    
+    ├── product/
     │   ├── __init__.py
     │   ├── admin.py
     │   ├── apps.py
@@ -50,7 +60,8 @@ the_project/
 ```
 
 ## Моделі
-CustomUser (core/models.py) (WIP!!!):
+### core/models.py
+- CustomUser (core/models.py) (WIP!!!):
 ```python
 class CustomUser(models.Model):
     username = models.CharField(max_length=150, unique=True)
@@ -59,6 +70,52 @@ class CustomUser(models.Model):
 
     def __str__(self):
         return self.username
+```
+
+### product/models
+- Product (.../models/product.py):
+```python
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    
+    category = models.ManyToManyField('product.Category', related_name='products', default="test_category")
+    brand = models.ManyToManyField('product.Brand', related_name='products', default="test_brand")
+    
+    size = models.CharField(max_length=20, default="No size specified.")
+    description = models.TextField(default="No description available.")
+    image = models.ImageField(upload_to='products/')
+    
+    price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    discount = IntegerField(max_length=3, default=0)
+    discount_end_date = models.DateField(null=True, blank=True)
+    
+    stock = models.IntegerField(max_length=5, default=0)
+    
+    
+    def __str__(self):
+        return self.name
+```
+
+
+- Brand (.../models/brand.py):
+```python
+class Brand(models.Model):
+    name = models.CharField(max_length=100)
+    ...
+
+    def __str__(self):
+        return self.name
+```
+
+
+- Category (.../models/category.py):
+```python
+class Category(models.Model):
+    name = models.CharField(max_length=100)
+    ...
+
+    def __str__(self):
+        return self.name
 ```
 
 
