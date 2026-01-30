@@ -21,4 +21,18 @@
     <p>Available Stock: {{ product.stock }}</p>
     <p>{{ product.category }}</p>
     <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
+
+
+    <form action="{% url 'cart:add_to_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <label for="id_quantity">Quantity</label>
+        <input type="number" name="quantity" id="id_quantity" value="1" min="1" required>
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit">Add to cart</button>
+    </form>
+
+    <form action="{% url 'cart:cart_detail' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">View cart</button>
+    </form>
 {% endblock %}
