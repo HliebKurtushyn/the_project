@@ -2,12 +2,12 @@ from django.db import models
 from django.core.validators import MinValueValidator
 
 from product.models import Product
-from core.models import CustomUser
 
-
+# Кошик базується на сесії, а не користувачі
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, related_name='carts')
+
+    session_key = models.CharField(max_length=40, null=True, blank=True, db_index=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -31,3 +31,10 @@ class CartItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
+
+    def get_total_price(self):
+        return self.product.price * self.quantity
+
+    def add_to_cart(self,quantity):
+        self.quantity += quantity
+        self.save(update_fields=['quantity'])
