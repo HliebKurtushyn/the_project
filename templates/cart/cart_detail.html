@@ -1,0 +1,28 @@
+{%  extends 'base.html' %}
+
+
+{% block content %}
+    {% if cart.is_active %}
+    	{% for item in cart_items %}
+    		<p>{{ item.product.name }} x{{ item.quantity }}</p>
+            <p>Price: ${{ item.get_total_price }}</p>
+
+
+            # Не працює!!
+            <form action="{% url 'cart:update_cart_item' item.id %}" method="post">
+                {% csrf_token %}
+                <label for="id_quantity_{{ item.id }}">Quantity</label>
+                <input type="number" name="quantity" id="id_quantity_{{ item.id }}" value="{{ item.quantity }}" min="1" required>
+                <button type="submit">Update Quantity</button>
+            </form>
+
+            <form action="{% url 'cart:remove_from_cart' item.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">Remove from cart</button>
+            </form>
+    	{% endfor %}
+
+    {% else %}
+        <p>Кошик пустий!</p>
+    {% endif %}
+{% endblock %}
