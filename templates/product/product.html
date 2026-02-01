@@ -4,9 +4,7 @@
 
 {% block content %}
     <h1>{{ product.name }}</h1>
-    <!-- ВАЖЛИВО: Коли brand і category не є дефолтним значенням, а класом, то ОБОВ'ЯЗКОВО звертатися
-       через product.brand.name і аналогічно з category. Потрібно буде виправити -->
-    <h4>{{ product.brand }}</h4>
+    <h4>{{ product.brand.name }}</h4>
     <h3>{{ product.description }}</h3>
     <p>Size: {{ product.size }}</p>
 
@@ -19,7 +17,10 @@
 
     <p>Price: ${{ product.price }}</p>
     <p>Available Stock: {{ product.stock }}</p>
+
     <p>{{ product.category }}</p>
+
+    <p>{{ product.category.name }}</p>
     <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
 
 
