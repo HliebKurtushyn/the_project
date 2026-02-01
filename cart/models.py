@@ -3,23 +3,34 @@ from django.core.validators import MinValueValidator
 
 from product.models import Product
 
-# Кошик базується на сесії, а не користувачі
+from core.models import CustomUser
+
+
 class Cart(models.Model):
-    id = models.AutoField(primary_key=True)
-
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        null=True, blank=True
+    )
     session_key = models.CharField(max_length=40, null=True, blank=True, db_index=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    is_active = models.BooleanField(default=False)
+    @property
+    def items(self):
+        return self.cartitem_set.all()
 
-    def __str__(self):
-        return f"Cart {self.id}"
+    @property
+    def total_price(self):
+        return sum(item.get_price() for item in self.items)
+
 
 
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
+
+    #   Прив'язка до Cart, яка може бути:
+    # - DB cart для логіненого юзера
+    # - анонімний через session (тут буде лише DB для юзерів)
 
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
@@ -32,9 +43,29 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
 
-    def get_total_price(self):
+    # Використав @property щоб шаблони могли викликати як атрибут (cart_item.total_price)
+    @property
+    def total_price(self):
         return self.product.price * self.quantity
 
-    def add_to_cart(self,quantity):
+    def add_to_cart(self, quantity):
         self.quantity += quantity
         self.save(update_fields=['quantity'])
+
+
+class SessionCartItem:
+    def __init__(self, product, quantity):
+        self.id = None               # у CartItem є id, тут можна None
+        self.cart = None             # теж None
+        self.product = product
+        self.quantity = quantity
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} in SessionCart"
+
+    @property
+    def total_price(self):
+        return self.product.price * self.quantity
+
+    def add_to_cart(self, quantity):
+        self.quantity += quantity
