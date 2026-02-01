@@ -42,6 +42,17 @@ the_project/
     │   └── migrations/
     │       └── __init__.py
     
+    ├── cart/
+    │   ├── __init__.py
+    │   ├── admin.py
+    │   ├── apps.py
+    │   ├── models.py
+    │   ├── views.py
+    │   ├── urls.py
+    │   ├── utils.py
+    │   └── migrations/
+    │       └── __init__.py
+    
     ├── templates/               # шаблони
     │   ├── product/
     │       └── product.html
@@ -88,15 +99,15 @@ class Product(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
-    category = models.ManyToManyField('product.Category', related_name='products', default="test_category", blank=True)
-    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='products', default="test brand", null=True, blank=True)
+    category = models.ManyToManyField('product.Category', related_name='products', blank=True)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='products', null=True, blank=True)
 
     size = models.CharField(max_length=20, default="No size specified.")
     description = models.TextField(default="No description available.")
     image = models.ImageField(upload_to='products/')
 
     price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
-    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, blank=True)
+    discount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
     discount_end_date = models.DateField(null=True, blank=True)
 
     stock = models.IntegerField(default=0)
@@ -134,23 +145,31 @@ class Category(models.Model):
 - Cart (WIP)
 ```python
 class Cart(models.Model):
-    id = models.AutoField(primary_key=True)
-
+    user = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        null=True, blank=True
+    )
     session_key = models.CharField(max_length=40, null=True, blank=True, db_index=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
 
-    is_active = models.BooleanField(default=False)
+    @property
+    def items(self):
+        return self.cartitem_set.all()
 
-    def __str__(self):
-        return f"Cart {self.id}" 
+    @property
+    def total_price(self):
+        return sum(item.get_price() for item in self.items)
 ```
 
 - CartItem (WIP)
 ```python
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
+
+    #   Прив'язка до Cart, яка може бути:
+    # - DB cart для логіненого юзера
+    # - анонімний через session (тут буде лише DB для юзерів)
 
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='items')
@@ -163,12 +182,34 @@ class CartItem(models.Model):
     def __str__(self):
         return f"{self.quantity} x {self.product.name} in Cart {self.cart.id}"
 
-    def get_total_price(self):
+    # Використав @property щоб шаблони могли викликати як атрибут (cart_item.total_price)
+    @property
+    def total_price(self):
         return self.product.price * self.quantity
 
-    def add_to_cart(self,quantity):
+    def add_to_cart(self, quantity):
         self.quantity += quantity
         self.save(update_fields=['quantity'])
+```
+
+- SessionCartItem (WIP)
+```python
+class SessionCartItem:
+    def __init__(self, product, quantity):
+        self.id = None               # у CartItem є id, тут можна None
+        self.cart = None             # теж None
+        self.product = product
+        self.quantity = quantity
+
+    def __str__(self):
+        return f"{self.quantity} x {self.product.name} in SessionCart"
+
+    @property
+    def total_price(self):
+        return self.product.price * self.quantity
+
+    def add_to_cart(self, quantity):
+        self.quantity += quantity
 ```
 
 ## Інше
