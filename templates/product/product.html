@@ -18,9 +18,12 @@
     <p>Price: ${{ product.price }}</p>
     <p>Available Stock: {{ product.stock }}</p>
 
-    <p>{{ product.category }}</p>
+    {% for category in product.category.all %}
+        <li><ul>{{ category.name }}</ul></li>
+    {% empty %}
+        <li>No categories</li>
+    {% endfor %}
 
-    <p>{{ product.category.name }}</p>
     <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
 
 
@@ -32,7 +35,7 @@
         <button type="submit">Add to cart</button>
     </form>
 
-    <form action="{% url 'cart:cart_detail' %}" method="post">
+    <form action="{% url 'cart:cart_detail' %}">
         {% csrf_token %}
         <button type="submit">View cart</button>
     </form>
