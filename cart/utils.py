@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.core.exceptions import MultipleObjectsReturned
 from product.models import Product
 from cart.models import Cart, CartItem, SessionCartItem
 
@@ -5,7 +7,26 @@ from cart.models import Cart, CartItem, SessionCartItem
 class DBCartAdapter:
     """Для залогіненого користувача"""
     def __init__(self, user):
-        self.cart, _ = Cart.objects.get_or_create(user=user, is_active=True)
+        try:
+            self.cart, _ = Cart.objects.get_or_create(user=user)
+        except MultipleObjectsReturned:
+            # Тут я зробив об'єднання дублікатів кошиків у один якщо вони є, бо таке ставалось
+            with transaction.atomic():
+                carts = list(Cart.objects.filter(user=user).order_by('-id'))
+                primary = carts[0]
+                duplicates = carts[1:]
+                for dup in duplicates:
+                    for item in list(dup.items.all()):
+                        existing = CartItem.objects.filter(cart=primary, product=item.product).first()
+                        if existing:
+                            existing.quantity += item.quantity
+                            existing.save()
+                            item.delete()
+                        else:
+                            item.cart = primary
+                            item.save()
+                    dup.delete()
+                self.cart = primary
 
     @property
     def items(self):
