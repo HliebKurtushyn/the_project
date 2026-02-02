@@ -1,9 +1,7 @@
-from django.shortcuts import render, get_object_or_404, redirect
-from django.views.decorators.http import require_POST
+from django.shortcuts import get_object_or_404, render
+from product.models import Product
 
-from .models import Product
+def product_detail_view(request, id):
+    product = get_object_or_404(Product.objects.select_related('brand').prefetch_related('category'), id=id)
 
-def product_detail_view(request, id:int):
-    product = get_object_or_404(Product, id=id)
-
-    return render(request, "product/product.html", {"product": product})
+    return render(request, 'product/product.html', {'product': product})
