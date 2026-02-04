@@ -4,9 +4,7 @@
 
 {% block content %}
     <h1>{{ product.name }}</h1>
-    <!-- ВАЖЛИВО: Коли brand і category не є дефолтним значенням, а класом, то ОБОВ'ЯЗКОВО звертатися
-       через product.brand.name і аналогічно з category. Потрібно буде виправити -->
-    <h4>{{ product.brand }}</h4>
+    <h4>{{ product.brand.name }}</h4>
     <h3>{{ product.description }}</h3>
     <p>Size: {{ product.size }}</p>
 
@@ -19,6 +17,26 @@
 
     <p>Price: ${{ product.price }}</p>
     <p>Available Stock: {{ product.stock }}</p>
-    <p>{{ product.category }}</p>
+
+    {% for category in product.category.all %}
+        <li><ul>{{ category.name }}</ul></li>
+    {% empty %}
+        <li>No categories</li>
+    {% endfor %}
+
     <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
+
+
+    <form action="{% url 'cart:add_to_cart' product.id %}" method="post">
+        {% csrf_token %}
+        <label for="id_quantity">Quantity</label>
+        <input type="number" name="quantity" id="id_quantity" value="1" min="1" required>
+        <input type="hidden" name="next" value="{{ request.path }}">
+        <button type="submit">Add to cart</button>
+    </form>
+
+    <form action="{% url 'cart:cart_detail' %}">
+        {% csrf_token %}
+        <button type="submit">View cart</button>
+    </form>
 {% endblock %}
