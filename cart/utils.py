@@ -42,6 +42,9 @@ class DBCartAdapter:
             return self.items.all()
         return self.items  # SessionCart
 
+    def clear_cart(self):
+        self.cart.items.all().delete()
+
     def add_item(self, product, quantity):
         item, created = CartItem.objects.get_or_create(cart=self.cart, product=product)
         if created:
@@ -89,6 +92,10 @@ class SessionCartAdapter:
     @property
     def items_list(self):
         return self.items
+
+    def clear_cart(self):
+        self.session["cart"] = {"items": {}}
+        self.session.modified = True
 
     def add_item(self, product, quantity):
         product_id_str = str(product.id)
