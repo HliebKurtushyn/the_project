@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Success!</h1>
+    <p>Thank you for your purchase. Your order has been successfully processed.</p>
+
+    <p>Order ID: {{ order_id }}</p>
+    <p>Total Price: ${{ total_price }}</p>
+
+    <h3>Bought items:</h3>
+    {% for item in items.all %}
+        <p>{{ item.product.name }} x{{ item.quantity }}</p>
+        <p>Price: ${{ item.total_price }}</p>
+        <br>
+    {% endfor %}
+
+    <p>Status: {{ status }}</p>
+
+    <a href="{% url 'cart:cart_detail' %}">Повернутись до кошику</a>
+
+{% endblock %}
