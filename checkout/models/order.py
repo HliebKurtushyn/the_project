@@ -6,7 +6,7 @@ from .order_status import OrderStatus
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
 
-    user = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE)
+    user = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE, null=True, blank=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=10, choices=OrderStatus.choices, default=OrderStatus.PENDING)
