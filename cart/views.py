@@ -1,17 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from django.views.decorators.http import require_POST
-from django.http import JsonResponse
 
-from cart.models import Cart, CartItem
 from product.models import Product
-from .utils import get_cart
+from .utils import get_cart, get_items
 
 
 
 def cart_view(request):
     cart = get_cart(request)
-    cart_items = cart.items.all()
+    cart_items = get_items(request, cart)
 
     return render(request, 'cart/cart_detail.html', {
         'cart': cart,
