@@ -1,5 +1,7 @@
 from django.db import transaction
 from django.core.exceptions import MultipleObjectsReturned
+from django.template.context_processors import request
+
 from product.models import Product
 from cart.models import Cart, CartItem, SessionCartItem
 
@@ -125,3 +127,8 @@ def get_cart(request):
     if request.user.is_authenticated:
         return DBCartAdapter(request.user)
     return SessionCartAdapter(request)
+
+def get_items(request, cart):
+    if request.user.is_authenticated:
+        return cart.items.all()
+    return cart.items
