@@ -11,7 +11,7 @@ from .utils import get_cart
 
 def cart_view(request):
     cart = get_cart(request)
-    cart_items = cart.items
+    cart_items = cart.items.all()
 
     return render(request, 'cart/cart_detail.html', {
         'cart': cart,
