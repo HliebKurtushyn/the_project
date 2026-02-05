@@ -1,12 +1,10 @@
 from django.db import transaction
 from django.core.exceptions import MultipleObjectsReturned
-from django.template.context_processors import request
-
 from product.models import Product
 from cart.models import Cart, CartItem, SessionCartItem
 
-# Адаптери поставив щоб уніфіковувати роботу з кошиком для різних типів користувачів
-class DBCartAdapter:
+# Адаптери поставив щоб уніфіковувати роботу з оплатою для різних типів користувачів
+class DBCheckoutAdapter:
     """Для залогіненого користувача"""
     def __init__(self, user):
         try:
@@ -71,7 +69,7 @@ class DBCartAdapter:
             pass
 
 
-class SessionCartAdapter:
+class SessionCheckoutAdapter:
     """Для анонімного користувача"""
     def __init__(self, request):
         if not request.session.session_key:
@@ -127,8 +125,3 @@ def get_cart(request):
     if request.user.is_authenticated:
         return DBCartAdapter(request.user)
     return SessionCartAdapter(request)
-
-def get_items(request, cart):
-    if request.user.is_authenticated:
-        return cart.items.all()
-    return cart.items

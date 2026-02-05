@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'account',
     'product',
     'cart',
+    'checkout',
 ]
 
 MIDDLEWARE = [
@@ -128,3 +129,7 @@ STATIC_ROOT = BASE_DIR / 'staticfiles'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
+
+# Session settings
+SESSION_COOKIE_AGE = 365 * 24 * 60 * 60  # 1 Year
+SESSION_SAVE_EVERY_REQUEST = True

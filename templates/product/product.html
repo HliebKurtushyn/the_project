@@ -36,7 +36,6 @@
     </form>
 
     <form action="{% url 'cart:cart_detail' %}">
-        {% csrf_token %}
         <button type="submit">View cart</button>
     </form>
 {% endblock %}

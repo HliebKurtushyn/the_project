@@ -21,8 +21,7 @@ class Cart(models.Model):
 
     @property
     def total_price(self):
-        return sum(item.get_price() for item in self.items)
-
+        return sum(item.total_price for item in self.items.all())
 
 
 class CartItem(models.Model):
@@ -52,6 +51,12 @@ class CartItem(models.Model):
         self.quantity += quantity
         self.save(update_fields=['quantity'])
 
+    def get_price(self):
+        return self.product.price
+
+    def get_total_price(self):
+        return self.total_price
+
 
 class SessionCartItem:
     def __init__(self, product, quantity):
@@ -69,3 +74,9 @@ class SessionCartItem:
 
     def add_to_cart(self, quantity):
         self.quantity += quantity
+
+    def get_price(self):
+        return self.product.price
+
+    def get_total_price(self):
+        return self.total_price

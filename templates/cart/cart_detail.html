@@ -28,6 +28,13 @@
                 <button type="submit">Remove from cart</button>
             </form>
         {% endfor %}
+
+        <p>Total Price: ${{ cart.total_price }}</p>
+
+        <form action="{% url "checkout:checkout_view" %}">
+            <button type="submit">Proceed to Checkout</button>
+        </form>
+
     {% else %}
         <p>Кошик пустий!</p>
     {% endif %}

@@ -142,7 +142,7 @@ class Category(models.Model):
 ```
 
 ### cart/models.py
-- Cart (WIP)
+- Cart (WIP) (.../models.py):
 ```python
 class Cart(models.Model):
     user = models.ForeignKey(
@@ -162,7 +162,7 @@ class Cart(models.Model):
         return sum(item.get_price() for item in self.items)
 ```
 
-- CartItem (WIP)
+- CartItem (WIP) (.../models.py):
 ```python
 class CartItem(models.Model):
     id = models.AutoField(primary_key=True)
@@ -190,9 +190,15 @@ class CartItem(models.Model):
     def add_to_cart(self, quantity):
         self.quantity += quantity
         self.save(update_fields=['quantity'])
+
+    def get_price(self):
+        return self.product.price
+
+    def get_total_price(self):
+        return self.total_price
 ```
 
-- SessionCartItem (WIP)
+- SessionCartItem (WIP) (.../models.py):
 ```python
 class SessionCartItem:
     def __init__(self, product, quantity):
@@ -210,7 +216,65 @@ class SessionCartItem:
 
     def add_to_cart(self, quantity):
         self.quantity += quantity
+
+    def get_price(self):
+        return self.product.price
+
+    def get_total_price(self):
+        return self.total_price
+
 ```
+
+### checkout/models
+- Order (WIP) (.../models/order.py):
+```python
+class Order(models.Model):
+    id = models.AutoField(primary_key=True)
+
+    user = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE, null=True, blank=True)
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=10, choices=OrderStatus.choices, default=OrderStatus.PENDING)
+
+    @property
+    def total_price(self):
+        return sum(item.total_price for item in self.items.all())
+```
+
+- OrderItem (WIP) (.../models/order_item.py):
+```python
+class OrderItem(models.Model):
+    id = models.AutoField(primary_key=True)
+
+    order = models.ForeignKey('Order', related_name='items', on_delete=models.CASCADE)
+    product = models.ForeignKey('product.Product', related_name='product', on_delete=models.CASCADE)
+
+    quantity = models.PositiveIntegerField(default=1)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    @property
+    def total_price(self):
+        return self.price * self.quantity
+```
+
+- OrdersHistory (WIP) (.../models/orders_history.py):
+```python
+class OrdersHistory(models.Model):
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey('core.CustomUser', on_delete=models.CASCADE, null=True, blank=True)
+    order_data = models.JSONField()
+    created_at = models.DateTimeField(auto_now_add=True)
+```
+
+- OrderStatus (WIP) (.../models/order_status.py):
+```python
+class OrderStatus(models.TextChoices):
+    PENDING = 'PENDING', 'Pending'
+    COMPLETED = 'COMPLETED', 'Completed'
+    CANCELLED = 'CANCELLED', 'Cancelled'
+```
+
+
 
 ## Інше
 - Використовується система шаблонів Jinja2.
