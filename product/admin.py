@@ -32,13 +32,13 @@ class ProductAdmin(admin.ModelAdmin):
 # WIP
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'description')
     search_fields = ('name',)
     ordering = ('name',)
 
 # WIP
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
-    list_display = ('name',)
+    list_display = ('name', 'description')
     search_fields = ('name',)
     ordering = ('name',)
