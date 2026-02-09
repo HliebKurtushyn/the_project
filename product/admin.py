@@ -29,14 +29,12 @@ class ProductAdmin(admin.ModelAdmin):
         return obj.discount_end_date
     discount_end_date.short_description = 'Discount End Date'
 
-# WIP
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name',)
     search_fields = ('name',)
     ordering = ('name',)
 
-# WIP
 @admin.register(Brand)
 class BrandAdmin(admin.ModelAdmin):
     list_display = ('name',)

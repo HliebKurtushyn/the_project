@@ -1,11 +1,9 @@
-{% extends 'base.html' %}
+ {% extends 'base.html' %}
 
 {% block title %}<title> Product - {{ product.name }}</title>{% endblock %}
 
 {% block content %}
     <h1>{{ product.name }}</h1>
-    <!-- ВАЖЛИВО: Коли brand і category не є дефолтним значенням, а класом, то ОБОВ'ЯЗКОВО звертатися
-       через product.brand.name і аналогічно з category. Потрібно буде виправити -->
     <h4>{{ product.brand }}</h4>
     <h3>{{ product.description }}</h3>
     <p>Size: {{ product.size }}</p>

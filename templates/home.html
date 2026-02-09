@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Головна сторінка</h1>
+{% if user.is_authenticated %}
+    <p>Привіт, {{ user.email }}!</p>
+    <a href="{% url 'logout' %}">Вийти</a>
+{% else %}
+    <p><a href="{% url 'login' %}">Увійти</a> | <a href="{% url 'register' %}">Зареєструватися</a></p>
+{% endif %}
+{% endblock %}
