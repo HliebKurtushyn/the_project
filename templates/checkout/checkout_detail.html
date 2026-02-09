@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block messages %}
+    {% if messages %}
+        <ul class="messages">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h3>Items to buy:</h3>
+    {% for item in cart.items_list %}
+        <p>{{ item.product.name }} x{{ item.quantity }}</p>
+        <p>Price: ${{ item.total_price }}</p>
+        <br>
+    {% endfor %}
+
+    <form action="{% url 'checkout:checkout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">Оформити замовлення</button>
+    </form>
+
+{% endblock %}

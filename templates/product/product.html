@@ -1,22 +1,12 @@
- {% extends 'base.html' %}
-
-{% block title %}<title> Product - {{ product.name }}</title>{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
     <h1>{{ product.name }}</h1>
-    <h4>{{ product.brand }}</h4>
-    <h3>{{ product.description }}</h3>
-    <p>Size: {{ product.size }}</p>
-
-    {% if product.discount %}
-        <p>Discount: {{ product.discount }}%</p>
-        <p>Ends: {{ product.discount_end_date }}</p>
-    {% else %}
-        <p>No current discounts.</p>
+    <p>{{ product.description }}</p>
+    <p>Ціна: {{ product.price }}</p>
+    {% if product.image %}
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
     {% endif %}
-
-    <p>Price: ${{ product.price }}</p>
-    <p>Available Stock: {{ product.stock }}</p>
-    <p>{{ product.category }}</p>
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
+    <br>
+    <a href="{% url 'product_list' %}">Назад до списку</a>
 {% endblock %}

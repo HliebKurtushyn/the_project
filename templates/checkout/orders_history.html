@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <h1>Історія замовлень</h1>
+    {% if orders %}
+        {% for record in orders %}
+            <p>Номер замовлення:{{ record.order_id }}</p>
+            <p>Загальна вартість: ${{ record.total_price }}</p>
+            <p>Статус: {{ record.status }}</p>
+            <p>Замовлено: {{ record.created_at }}</p>
+            <p>-------------------------------------------------</p>
+        {% endfor %}
+    {% else %}
+        <p>Немає інформації про історію замовлень</p>
+    {% endif %}
+{% endblock %}
