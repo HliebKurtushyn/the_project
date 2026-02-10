@@ -6,7 +6,7 @@ class Brand(models.Model):
     name = models.CharField(max_length=100)
 
     description = models.TextField(blank=True, null=True)
-    logo = models.ImageField(upload_to='brand_logos/', blank=True, null=True)
+    logo = models.ImageField(upload_to='brand_logos/', blank=True)
 
 
     def __str__(self):
