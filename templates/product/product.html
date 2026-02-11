@@ -40,10 +40,12 @@
     </form>
 
     {% if recently_viewed %}
-    	    <h2>Недавно переглянуті:</h2>
-    {% for item in recently_viewed %}
-    	<p>{{ item }}</p>
-    {% endfor %}
+        <h2>Нещодавно переглянуті:</h2>
+        {% for item in recently_viewed %}
+            <p>{{ item }}</p>
+            <a href="{% url 'product:product_detail' item.id %}">Переглянути</a>
+            <p>---------------------------------------------------------------</p>
+        {% endfor %}
     {% else %}
         <p>Продовжуйте переглядати товари, щоб тут з'явились останні з них!</p>
     {% endif %}
