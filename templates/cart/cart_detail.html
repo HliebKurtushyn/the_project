@@ -38,4 +38,13 @@
     {% else %}
         <p>Кошик пустий!</p>
     {% endif %}
+
+    {% if recently_viewed %}
+        <h2>Нещодавно переглянуті:</h2>
+        {% for item in recently_viewed %}
+            <p>{{ item }}</p>
+            <a href="{% url 'product:product_detail' item.id %}">Переглянути</a>
+            <p>---------------------------------------------------------------</p>
+        {% endfor %}
+    {% endif %}
 {% endblock %}
