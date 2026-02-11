@@ -5,11 +5,13 @@
 </head>
 <body>
     <h1>Login</h1>
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit">Login</button>
     </form>
+
     <p><a href="/account/register/">Register</a></p>
 </body>
 </html>
