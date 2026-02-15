@@ -14,25 +14,25 @@
     {% if cart_items %}
         {% for item in cart.items_list %}
             <p>{{ item.product.name }} x{{ item.quantity }}</p>
-            <p>Price: ${{ item.total_price }}</p>
+            <p>Ціна: ${{ item.total_price }}</p>
 
             <form action="{% url 'cart:update_cart_item' item.product.id %}" method="post">
                 {% csrf_token %}
-                <label for="id_quantity_{{ item.product.id }}">Quantity</label>
+                <label for="id_quantity_{{ item.product.id }}">Кількість</label>
                 <input type="number" name="quantity" id="id_quantity_{{ item.product.id }}" value="{{ item.quantity }}" min="1" required>
-                <button type="submit">Update Quantity</button>
+                <button type="submit">Оновити кількість</button>
             </form>
 
             <form action="{% url 'cart:remove_from_cart' item.product.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">Remove from cart</button>
+                <button type="submit">Видалити з кошика</button>
             </form>
         {% endfor %}
 
-        <p>Total Price: ${{ cart.total_price }}</p>
+        <p>Загальна сума: ${{ cart.total_price }}</p>
 
         <form action="{% url "checkout:checkout_view" %}">
-            <button type="submit">Proceed to Checkout</button>
+            <button type="submit">Оформити замовлення</button>
         </form>
 
     {% else %}
