@@ -9,6 +9,16 @@
     {% block css_conn %}{% endblock %}
 </head>
 <body>
+    <nav>
+        <ul>
+            <li><a href="{% url 'home:home' %}">Головна</a></li>
+            <li><a href="{% url 'product:product_list' %}">Товари</a></li>
+            <li><a href="{% url 'cart:cart_detail' %}">Кошик</a></li>
+            <li><a href="{% url 'checkout:orders_history' %}">Замовлення</a></li>
+            <li><a href="{% url 'user_profile:profile' %}">Профіль</a></li>
+        </ul>
+    </nav>
+
     {% block messages %}{% endblock %}
     {% block content %}{% endblock %}
     {% block js_conn %}{% endblock %}
