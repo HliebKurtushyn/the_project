@@ -27,7 +27,8 @@ urlpatterns = [
     path("product/", include("product.urls")),
     path("cart/", include("cart.urls")),
     path("checkout/", include("checkout.urls")),
-    path('', RedirectView.as_view(url='/account/register/'), name='home'),
+    path("account/", include("account.urls")),
+    path("", RedirectView.as_view(url="/account/register/"), name="home"),
 ]
 
 
