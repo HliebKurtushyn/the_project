@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <title>Реєстрація</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}Реєстрація{% endblock %}
+
+{% block content %}
     <h1>Реєстрація</h1>
 
     <form method="post">
@@ -13,5 +12,4 @@
     </form>
 
     <p><a href="/account/login/">Увійти</a></p>
-</body>
-</html>
+{% endblock %}
