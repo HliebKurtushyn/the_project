@@ -11,6 +11,8 @@
         </p>
 
         <p><strong>Приєднався:</strong> {{ user.date_joined }}</p>
+
+        <p>Адреса для доставки: {{ user.delivery_address }}</p>
     </div>
 
     <a href="{% url 'checkout:orders_history' %}">Історія замовлень</a>
