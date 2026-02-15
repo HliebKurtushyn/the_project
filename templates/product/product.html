@@ -1,27 +1,27 @@
 {% extends 'base.html' %}
 
-{% block title %}<title> Product - {{ product.name }}</title>{% endblock %}
+{% block title %}<title> Товар - {{ product.name }}</title>{% endblock %}
 
 {% block content %}
     <h1>{{ product.name }}</h1>
     <h4>{{ product.brand.name }}</h4>
     <h3>{{ product.description }}</h3>
-    <p>Size: {{ product.size }}</p>
+    <p>Розмір: {{ product.size }}</p>
 
     {% if product.discount %}
-        <p>Discount: {{ product.discount }}%</p>
-        <p>Ends: {{ product.discount_end_date }}</p>
+        <p>Знижка: {{ product.discount }}%</p>
+        <p>Закінчується: {{ product.discount_end_date }}</p>
     {% else %}
-        <p>No current discounts.</p>
+        <p>Наразі знижок немає.</p>
     {% endif %}
 
-    <p>Price: ${{ product.price }}</p>
-    <p>Available Stock: {{ product.stock }}</p>
+    <p>Ціна: ${{ product.price }}</p>
+    <p>Наявний запас: {{ product.stock }}</p>
 
     {% for category in product.category.all %}
         <li><ul>{{ category.name }}</ul></li>
     {% empty %}
-        <li>No categories</li>
+        <li>Категорій немає</li>
     {% endfor %}
 
     <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
@@ -29,14 +29,14 @@
 
     <form action="{% url 'cart:add_to_cart' product.id %}" method="post">
         {% csrf_token %}
-        <label for="id_quantity">Quantity</label>
+        <label for="id_quantity">Кількість</label>
         <input type="number" name="quantity" id="id_quantity" value="1" min="1" required>
         <input type="hidden" name="next" value="{{ request.path }}">
-        <button type="submit">Add to cart</button>
+        <button type="submit">Додати до кошика</button>
     </form>
 
     <form action="{% url 'cart:cart_detail' %}">
-        <button type="submit">View cart</button>
+        <button type="submit">Переглянути кошик</button>
     </form>
 
     {% if recently_viewed %}
@@ -47,7 +47,7 @@
             <p>---------------------------------------------------------------</p>
         {% endfor %}
     {% else %}
-        <p>Продовжуйте переглядати товари, щоб тут з'явились останні з них!</p>
+        <p>Продовжуйте переглядати товари, щоб тут з'явилися останні з них!</p>
     {% endif %}
 
 

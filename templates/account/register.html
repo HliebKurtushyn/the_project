@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html lang="uk">
 <head>
-    <title>Register</title>
+    <title>Реєстрація</title>
 </head>
 <body>
-    <h1>Register</h1>
+    <h1>Реєстрація</h1>
 
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        <button type="submit">Register</button>
+        <button type="submit">Зареєструватися</button>
     </form>
 
-    <p><a href="/account/login/">Login</a></p>
+    <p><a href="/account/login/">Увійти</a></p>
 </body>
 </html>
