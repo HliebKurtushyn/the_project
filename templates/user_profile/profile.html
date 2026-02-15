@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h2>Профіль</h2>
+    <div>
+        <h3>{{ user.username }}</h3>
+
+        <p>
+          <strong>Email:</strong>
+          {{ user.email|default:"Контактні дані відсутні" }}
+        </p>
+
+        <p><strong>Приєднався:</strong> {{ user.date_joined }}</p>
+    </div>
+
+    <a href="{% url 'checkout:orders_history' %}">Історія замовлень</a>
+
+    <br>
+
+    <form action="{% url 'account:logout' %}">
+        <button type="submit">Вихід</button>
+    </form>
+{% endblock %}

@@ -28,6 +28,7 @@ urlpatterns = [
     path("cart/", include("cart.urls")),
     path("checkout/", include("checkout.urls")),
     path("account/", include("account.urls")),
+    path("profile/", include("user_profile.urls")),
     path("", RedirectView.as_view(url="/account/register/"), name="home"),
 ]
 
