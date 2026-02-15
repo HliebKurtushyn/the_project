@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, render
 from product.models import Product
+from core.cache_utils import cache_page_anonymous
 
 
 def product_detail_view(request, id):
@@ -22,6 +23,7 @@ def product_detail_view(request, id):
     )
 
 
+@cache_page_anonymous(60 * 10)
 def product_list_view(request):
     products = Product.objects.all()
     return render(request, "product/product_list.html", {"products": products})
