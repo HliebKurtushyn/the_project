@@ -20,3 +20,8 @@ def product_detail_view(request, id):
         "product/product.html",
         {"product": product},
     )
+
+
+def product_list_view(request):
+    products = Product.objects.all()
+    return render(request, "product/product_list.html", {"products": products})
