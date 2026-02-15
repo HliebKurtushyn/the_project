@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1>Наші товари</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4">
+                <h3>{{ product.name }}</h3>
+                <p>{{ product.price }} руб.</p>
+                <a href="{% url 'product:product_detail' product.id %}">Переглянути деталі</a>
+            </div>
+        {% empty %}
+            <p>Товари відсутні.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
