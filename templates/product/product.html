@@ -1,57 +1,33 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load cache %}
 
-{% block title %}<title> Товар - {{ product.name }}</title>{% endblock %}
-
 {% block content %}
-    {% cache 3600 product_detail product.id %}
-    <h1>{{ product.name }}</h1>
-    <h4>{{ product.brand.name }}</h4>
-    <h3>{{ product.description }}</h3>
-    <p>Розмір: {{ product.size }}</p>
+<div class="container">
+    {% cache 900 product_detail product.id %}
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h2>{{ product.name }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <p class="text-muted">{{ product.description }}</p>
+            <h3 class="text-danger">${{ product.price }}</h3>
+            <p class="text-success">В наявності: {{ product.quantity }}</p>
 
-    {% if product.discount %}
-        <p>Знижка: {{ product.discount }}%</p>
-        <p>Закінчується: {{ product.discount_end_date }}</p>
-    {% else %}
-        <p>Наразі знижок немає.</p>
-    {% endif %}
-
-    <p>Ціна: ${{ product.price }}</p>
-    <p>Наявний запас: {{ product.stock }}</p>
-
-    {% for category in product.category.all %}
-        <li><ul>{{ category.name }}</ul></li>
-    {% empty %}
-        <li>Категорій немає</li>
-    {% endfor %}
-
-    <img src="{{ product.image.url }}" alt="{{ product.name }}" style="width:300px;height:500px;">
+            <form method="post" action="{% url 'cart:add_to_cart' product.id %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label">Кількість:</label>
+                    <input type="number" name="quantity" value="1" min="1" max="{{ product.quantity }}" class="form-control w-25">
+                </div>
+                <button type="submit" class="btn btn-amazon btn-lg">Додати в кошик</button>
+            </form>
+        </div>
+    </div>
     {% endcache %}
-
-
-    <form action="{% url 'cart:add_to_cart' product.id %}" method="post">
-        {% csrf_token %}
-        <label for="id_quantity">Кількість</label>
-        <input type="number" name="quantity" id="id_quantity" value="1" min="1" required>
-        <input type="hidden" name="next" value="{{ request.path }}">
-        <button type="submit">Додати до кошика</button>
-    </form>
-
-    <form action="{% url 'cart:cart_detail' %}">
-        <button type="submit">Переглянути кошик</button>
-    </form>
-
-    {% if recently_viewed %}
-        <h2>Нещодавно переглянуті:</h2>
-        {% for item in recently_viewed %}
-            <p>{{ item }}</p>
-            <a href="{% url 'product:product_detail' item.id %}">Переглянути</a>
-            <p>---------------------------------------------------------------</p>
-        {% endfor %}
-    {% else %}
-        <p>Продовжуйте переглядати товари, щоб тут з'явилися останні з них!</p>
-    {% endif %}
-
-
+</div>
 {% endblock %}

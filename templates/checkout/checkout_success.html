@@ -1,22 +1,14 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h1>Успіх!</h1>
-    <p>Дякуємо за покупку. Ваше замовлення успішно оброблено.</p>
-
-    <p>Номер замовлення: {{ order_id }}</p>
-    <p>Загальна сума: ${{ total_price }}</p>
-
-    <h3>Куплені товари:</h3>
-    {% for item in items.all %}
-        <p>{{ item.product.name }} x{{ item.quantity }}</p>
-        <p>Ціна: ${{ item.total_price }}</p>
-        <br>
-    {% endfor %}
-
-    <p>Статус: {{ status }}</p>
-
-    <a href="{% url 'cart:cart_detail' %}">Повернутись до кошику</a>
-    <a href="{% url 'checkout:orders_history' %}">Переглянути історію замовлень</a>
-
+<div class="container text-center">
+    <div class="alert alert-success mt-5" role="alert">
+        <h1 class="display-4">✓ Замовлення успішно оформлено!</h1>
+        <p class="lead">Дякуємо за покупку. Ваше замовлення #{{ order.id }} прийнято в обробку.</p>
+        <hr>
+        <p>Ми зв'яжемося з вами найближчим часом для підтвердження.</p>
+        <a href="{% url 'home:home' %}" class="btn btn-amazon btn-lg mt-3">Повернутися на головну</a>
+        <a href="{% url 'checkout:orders_history' %}" class="btn btn-outline-secondary btn-lg mt-3">Мої замовлення</a>
+    </div>
+</div>
 {% endblock %}

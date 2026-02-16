@@ -1,23 +1,35 @@
 {% extends "base.html" %}
-{% load cache %}
 
 {% block content %}
 <div class="container">
-    {% cache 600 product_list_page %}
-    <h1>Наші товари</h1>
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Головна</a></li>
+            <li class="breadcrumb-item active">Всі товари</li>
+        </ol>
+    </nav>
+
+    <h1 class="mb-4 fw-bold">Каталог товарів</h1>
+
     <div class="row">
         {% for product in products %}
-            <div class="col-md-4">
-                {% cache 900 product_card product.id %}
-                <h3>{{ product.name }}</h3>
-                <p>{{ product.price }} руб.</p>
-                <a href="{% url 'product:product_detail' product.id %}">Переглянути деталі</a>
-                {% endcache %}
+            <div class="col-md-3 mb-4">
+                <div class="card h-100 shadow-sm border-0">
+                    <div class="card-body">
+                        <h6 class="card-title fw-bold">{{ product.name }}</h6>
+                        <p class="text-muted small">{{ product.description|truncatewords:10 }}</p>
+                        <div class="mt-auto">
+                            <p class="text-danger fw-bold mb-2">${{ product.price }}</p>
+                            <a href="{% url 'product:product_detail' product.id %}" class="btn btn-amazon btn-sm w-100">Купити</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         {% empty %}
-            <p>Товари відсутні.</p>
+            <div class="col-12">
+                <div class="alert alert-warning">На жаль, товарів поки що немає в наявності.</div>
+            </div>
         {% endfor %}
     </div>
-    {% endcache %}
 </div>
 {% endblock %}

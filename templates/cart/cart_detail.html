@@ -1,50 +1,47 @@
-{% extends 'base.html' %}
-
-{% block messages %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
+<div class="container">
+    <h1 class="mb-4">Ваш кошик</h1>
+
     {% if cart_items %}
-        {% for item in cart.items_list %}
-            <p>{{ item.product.name }} x{{ item.quantity }}</p>
-            <p>Ціна: ${{ item.total_price }}</p>
+        <div class="table-responsive">
+            <table class="table table-bordered">
+                <thead class="table-light">
+                    <tr>
+                        <th>Товар</th>
+                        <th>Ціна</th>
+                        <th>Кількість</th>
+                        <th>Сума</th>
+                        <th>Дії</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in cart_items %}
+                    <tr>
+                        <td>{{ item.product.name }}</td>
+                        <td>${{ item.product.price }}</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>${{ item.total_price }}</td>
+                        <td>
+                            <form method="post" action="{% url 'cart:remove_from_cart' item.product.id %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Видалити</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
 
-            <form action="{% url 'cart:update_cart_item' item.product.id %}" method="post">
-                {% csrf_token %}
-                <label for="id_quantity_{{ item.product.id }}">Кількість</label>
-                <input type="number" name="quantity" id="id_quantity_{{ item.product.id }}" value="{{ item.quantity }}" min="1" required>
-                <button type="submit">Оновити кількість</button>
-            </form>
-
-            <form action="{% url 'cart:remove_from_cart' item.product.id %}" method="post">
-                {% csrf_token %}
-                <button type="submit">Видалити з кошика</button>
-            </form>
-        {% endfor %}
-
-        <p>Загальна сума: ${{ cart.total_price }}</p>
-
-        <form action="{% url "checkout:checkout_view" %}">
-            <button type="submit">Оформити замовлення</button>
-        </form>
-
+        <div class="text-end">
+            <h3>Загальна сума: <span class="text-danger">${{ total_price }}</span></h3>
+            <a href="{% url 'checkout:checkout_detail' %}" class="btn btn-amazon btn-lg mt-3">Оформити замовлення</a>
+        </div>
     {% else %}
-        <p>Кошик пустий!</p>
+        <div class="alert alert-info">Ваш кошик порожній</div>
+        <a href="{% url 'product:product_list' %}" class="btn btn-amazon">Перейти до покупок</a>
     {% endif %}
-
-    {% if recently_viewed %}
-        <h2>Нещодавно переглянуті:</h2>
-        {% for item in recently_viewed %}
-            <p>{{ item }}</p>
-            <a href="{% url 'product:product_detail' item.id %}">Переглянути</a>
-            <p>---------------------------------------------------------------</p>
-        {% endfor %}
-    {% endif %}
+</div>
 {% endblock %}

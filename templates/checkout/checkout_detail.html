@@ -1,26 +1,48 @@
-{% extends 'base.html' %}
-
-{% block messages %}
-    {% if messages %}
-        <ul class="messages">
-            {% for message in messages %}
-                <li>{{ message }}</li>
-            {% endfor %}
-        </ul>
-    {% endif %}
-{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h3>Товари для оплати:</h3>
-    {% for item in cart.items_list %}
-        <p>{{ item.product.name }} x{{ item.quantity }}</p>
-        <p>Ціна: ${{ item.total_price }}</p>
-        <br>
-    {% endfor %}
+<div class="container">
+    <h1 class="mb-4">Оформлення замовлення</h1>
 
-    <form action="{% url 'checkout:checkout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit">Оформити замовлення</button>
-    </form>
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Адреса доставки</h5>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Адреса:</label>
+                            <input type="text" name="address" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Телефон:</label>
+                            <input type="text" name="phone" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-amazon btn-lg">Підтвердити замовлення</button>
+                    </form>
+                </div>
+            </div>
+        </div>
 
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Ваше замовлення</h5>
+                    {% for item in cart %}
+                        <div class="d-flex justify-content-between mb-2">
+                            <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                            <span>${{ item.total_price }}</span>
+                        </div>
+                    {% endfor %}
+                    <hr>
+                    <div class="d-flex justify-content-between">
+                        <strong>Разом:</strong>
+                        <strong class="text-danger">${{ total_price }}</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

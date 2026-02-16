@@ -1,16 +1,31 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h1>Історія замовлень</h1>
+<div class="container">
+    <h1 class="mb-4">Історія замовлень</h1>
+
     {% if orders %}
-        {% for record in orders %}
-            <p>Номер замовлення:{{ record.order_id }}</p>
-            <p>Загальна вартість: ${{ record.total_price }}</p>
-            <p>Статус: {{ record.status }}</p>
-            <p>Замовлено: {{ record.created_at }}</p>
-            <p>-------------------------------------------------</p>
+        {% for order in orders %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5 class="card-title">Замовлення #{{ order.id }}</h5>
+                <p class="text-muted">Дата: {{ order.created_at|date:"d.m.Y H:i" }}</p>
+                <p>Статус: <span class="badge bg-warning">{{ order.status }}</span></p>
+                <p>Адреса: {{ order.address }}</p>
+                <p class="fw-bold">Сума: ${{ order.total_price }}</p>
+
+                <h6>Товари:</h6>
+                <ul>
+                    {% for item in order.items.all %}
+                        <li>{{ item.product.name }} - {{ item.quantity }} шт. - ${{ item.price }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
         {% endfor %}
     {% else %}
-        <p>Немає інформації про історію замовлень</p>
+        <div class="alert alert-info">У вас ще немає замовлень</div>
+        <a href="{% url 'product:product_list' %}" class="btn btn-amazon">Почати покупки</a>
     {% endif %}
+</div>
 {% endblock %}

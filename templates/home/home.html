@@ -1,22 +1,14 @@
 {% extends 'base.html' %}
 {% load cache %}
-    {% block content %}
-        {% cache 600 home_product_list %}
-        <h1>Товари</h1>
-        <h2>Категорії</h2>
 
-        <ul>
-        {% for c in categories %}
-            <li>{{ c.name }}</li>
-        {% endfor %}
-        </ul>
-
-        {% for p in products %}
-            <hr>
-            <h3>{{ p.name }}</h3>
-            <p>{{ p.price }}</p>
-            <p>{{ p.description }}</p>
-            <hr>
-        {% endfor %}
-        {% endcache %}
+{% block content %}
+    <div class="container">
+        <div class="p-5 mb-4 bg-light rounded-3 border shadow-sm" style="background: linear-gradient(to bottom, #f8f9fa, #e3e6e6);">
+            <div class="container-fluid py-5">
+                <h1 class="display-5 fw-bold">Ласкаво просимо до нашого магазину!</h1>
+                <p class="col-md-8 fs-4">Найкращі пропозиції тижня вже тут. Найрізноманітніший одяг з доставкою додому.</p>
+                <a href="{% url 'product:product_list' %}" class="btn btn-amazon btn-lg">Перейти до покупок</a>
+            </div>
+        </div>
+    </div>
 {% endblock %}

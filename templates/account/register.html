@@ -1,15 +1,37 @@
-{% extends 'base.html' %}
-
-{% block title %}Реєстрація{% endblock %}
+{% extends "base.html" %}
 
 {% block content %}
-    <h1>Реєстрація</h1>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Зареєструватися</button>
-    </form>
-
-    <p><a href="/account/login/">Увійти</a></p>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-5">
+            <div class="card mt-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">Реєстрація</h2>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label class="form-label">Ім'я користувача:</label>
+                            <input type="text" name="username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Email:</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Пароль:</label>
+                            <input type="password" name="password1" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Підтвердження пароля:</label>
+                            <input type="password" name="password2" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-amazon w-100">Зареєструватися</button>
+                    </form>
+                    <hr>
+                    <p class="text-center">Вже є акаунт? <a href="{% url 'account:login' %}">Увійти</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
