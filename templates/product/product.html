@@ -26,7 +26,14 @@
             {% endif %}
 
             <p class="h4">Ціна: <span class="price-badge">${{ product.price }}</span></p>
-            <p>Наявний запас: {{ product.stock }}</p>
+        
+            {% if product.stock <= 0 %}
+                <p class="text-danger">Немає в наявності!</p>
+            {% elif product.stock <= 5 %}
+                <p class="text-warning">Невеликий запас: {{ product.stock }}</p>
+            {% else %}
+                <p>Наявний запас: {{ product.stock }}</p>
+            {% endif %}
 
             <div class="mb-3">
                 {% for category in product.category.all %}
@@ -40,7 +47,7 @@
                 {% csrf_token %}
                 <div class="input-group mb-2" style="max-width:160px;">
                     <label class="input-group-text" for="id_quantity">Кількість</label>
-                    <input type="number" name="quantity" id="id_quantity" value="1" min="1" required class="form-control">
+                    <input type="number" name="quantity" id="id_quantity" value="1" min="1" max="{{ product.stock }}" required class="form-control">
                 </div>
                 <input type="hidden" name="next" value="{{ request.path }}">
                 <button type="submit" class="btn btn-accent">Додати до кошика</button>
