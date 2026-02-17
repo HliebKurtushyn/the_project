@@ -10,7 +10,7 @@
             <div class="col-md-4">
                 {% cache 900 product_card product.id %}
                 <h3>{{ product.name }}</h3>
-                <p>{{ product.price }} руб.</p>
+                <p>${{ product.price }}</p>
                 <a href="{% url 'product:product_detail' product.id %}">Переглянути деталі</a>
                 {% endcache %}
             </div>

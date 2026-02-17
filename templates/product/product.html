@@ -11,7 +11,7 @@
     <p>Розмір: {{ product.size }}</p>
 
     {% if product.discount %}
-        <p>Знижка: {{ product.discount }}%</p>
+        <p>Знижка: -{{ product.discount }}%</p>
         <p>Закінчується: {{ product.discount_end_date }}</p>
     {% else %}
         <p>Наразі знижок немає.</p>
