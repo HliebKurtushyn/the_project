@@ -10,6 +10,7 @@
   --muted: #6b7280;           /* secondary text */
   --card-border: #e6e8ea;     /* subtle borders */
   --success: #16a34a;
+  --navbar-height: 56px;      /* used to offset page content when navbar is fixed */
 }
 
 /* Base typography and layout */
@@ -21,6 +22,7 @@ body{
   background: var(--bg);
   color: var(--text);
   margin: 0;
+  padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -35,6 +37,15 @@ body{
   color: #fff;
   border-bottom: 1px solid rgba(255,255,255,0.03);
   z-index: 1100;
+  /* Make navbar fixed to top so it won't create an unpredictable gap */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: var(--navbar-height);
+  display: flex;
+  align-items: center;
 }
 .navbar-site .navbar-brand{
   font-weight: 700;
@@ -136,7 +147,7 @@ h1, .page-title{ font-weight: 700; margin-bottom: 1rem; }
 .input-qty{ width: 90px; }
 
 /* Messages */
-.alert-fixed{ position: fixed; right: 1rem; top: 76px; z-index: 1200; min-width: 240px; }
+.alert-fixed{ position: fixed; right: 1rem; top: calc(var(--navbar-height) + 12px); z-index: 1200; min-width: 240px; }
 
 /* Footer */
 .footer{
@@ -147,14 +158,14 @@ h1, .page-title{ font-weight: 700; margin-bottom: 1rem; }
   border-top: 1px solid #e9ecef;
 }
 
-/* Add top spacing so content isn't flush with the navbar */
+/* Add top spacing so content isn't flush with the navbar. Increased to match fixed navbar height. */
 .main-container{
-  padding-top: 4rem; /* space below navbar */
+  padding-top: calc(var(--navbar-height) + 0.75rem); /* offset content so it isn't hidden under fixed navbar */
   padding-bottom: 1.5rem;
 }
 
 @media (max-width: 768px){
-  .main-container{ padding-top: 2rem; }
+  .main-container{ padding-top: calc(var(--navbar-height) + 0.5rem); }
   .product-card img{ height: 180px; }
   .navbar-site .form-control{ width: 100%; }
   .navbar-site .btn-outline-light{ display:none; }
