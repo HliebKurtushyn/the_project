@@ -65,7 +65,7 @@ ROOT_URLCONF = "the_project.urls"
 TEMPLATES = [
     # 1. Твій новий рушій Jinja2
     {
-        "BACKEND": "django.template.backends.jinja2.Jinja2",
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
