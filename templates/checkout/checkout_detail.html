@@ -15,7 +15,7 @@
     <div class="card mb-3">
         <div class="card-body">
             <h5>Товари для оплати:</h5>
-            {% for item in cart.items_list %}
+            {% for item in cart_items %}
                 <div class="d-flex justify-content-between border-bottom py-2">
                     <div>{{ item.product.name }} x{{ item.quantity }}</div>
                     <div>${{ item.total_price }}</div>
