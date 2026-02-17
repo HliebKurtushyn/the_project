@@ -2,25 +2,31 @@
 
 {% block messages %}
     {% if messages %}
-        <ul class="messages">
+        <div class="alert alert-info" role="alert">
             {% for message in messages %}
-                <li>{{ message }}</li>
+                <div>{{ message }}</div>
             {% endfor %}
-        </ul>
+        </div>
     {% endif %}
 {% endblock %}
 
 {% block content %}
-    <h3>Товари для оплати:</h3>
-    {% for item in cart.items_list %}
-        <p>{{ item.product.name }} x{{ item.quantity }}</p>
-        <p>Ціна: ${{ item.total_price }}</p>
-        <br>
-    {% endfor %}
+    <h1 class="mb-3">Оформлення замовлення</h1>
+    <div class="card mb-3">
+        <div class="card-body">
+            <h5>Товари для оплати:</h5>
+            {% for item in cart.items_list %}
+                <div class="d-flex justify-content-between border-bottom py-2">
+                    <div>{{ item.product.name }} x{{ item.quantity }}</div>
+                    <div>${{ item.total_price }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 
     <form action="{% url 'checkout:checkout' %}" method="post">
         {% csrf_token %}
-        <button type="submit">Оформити замовлення</button>
+        <button type="submit" class="btn btn-primary">Оформити замовлення</button>
     </form>
 
 {% endblock %}

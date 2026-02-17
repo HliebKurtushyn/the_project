@@ -3,13 +3,17 @@
 {% block title %}Вхід{% endblock %}
 
 {% block content %}
-    <h1>Вхід</h1>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-6 col-lg-4">
+            <h1 class="mb-3">Вхід</h1>
 
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Увійти</button>
-    </form>
+            <form method="post" class="card p-3">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary">Увійти</button>
+            </form>
 
-    <p><a href="/account/register/">Зареєструватися</a></p>
+            <p class="mt-2"><a href="/account/register/">Зареєструватися</a></p>
+        </div>
+    </div>
 {% endblock %}

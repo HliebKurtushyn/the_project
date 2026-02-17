@@ -1,25 +1,30 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <h2>Профіль</h2>
-    <div>
-        <h3>{{ user.username }}</h3>
+    <div class="row justify-content-center">
+        <div class="col-12 col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h2 class="card-title">Профіль</h2>
+                    <h3>{{ user.username }}</h3>
 
-        <p>
-          <strong>Email:</strong>
-          {{ user.email|default:"Контактні дані відсутні" }}
-        </p>
+                    <p>
+                      <strong>Email:</strong>
+                      {{ user.email|default:"Контактні дані відсутні" }}
+                    </p>
 
-        <p><strong>Приєднався:</strong> {{ user.date_joined }}</p>
+                    <p><strong>Приєднався:</strong> {{ user.date_joined }}</p>
 
-        <p>Адреса для доставки: {{ user.delivery_address }}</p>
+                    <p>Адреса для доставки: {{ user.delivery_address }}</p>
+
+                    <a href="{% url 'checkout:orders_history' %}" class="btn btn-link">Історія замовлень</a>
+
+                    <form action="{% url 'account:logout' %}" method="post" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">Вихід</button>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
-
-    <a href="{% url 'checkout:orders_history' %}">Історія замовлень</a>
-
-    <br>
-
-    <form action="{% url 'account:logout' %}">
-        <button type="submit">Вихід</button>
-    </form>
 {% endblock %}

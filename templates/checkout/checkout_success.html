@@ -1,22 +1,29 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Успіх!</h1>
-    <p>Дякуємо за покупку. Ваше замовлення успішно оброблено.</p>
+    <div class="card">
+      <div class="card-body">
+        <h1 class="card-title">Успіх!</h1>
+        <p class="card-text">Дякуємо за покупку. Ваше замовлення успішно оброблено.</p>
 
-    <p>Номер замовлення: {{ order_id }}</p>
-    <p>Загальна сума: ${{ total_price }}</p>
+        <p><strong>Номер замовлення:</strong> {{ order_id }}</p>
+        <p><strong>Загальна сума:</strong> ${{ total_price }}</p>
 
-    <h3>Куплені товари:</h3>
-    {% for item in items.all %}
-        <p>{{ item.product.name }} x{{ item.quantity }}</p>
-        <p>Ціна: ${{ item.total_price }}</p>
-        <br>
-    {% endfor %}
+        <h5>Куплені товари:</h5>
+        <ul class="list-group mb-3">
+            {% for item in items.all %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>{{ item.product.name }} x{{ item.quantity }}</span>
+                    <span>${{ item.total_price }}</span>
+                </li>
+            {% endfor %}
+        </ul>
 
-    <p>Статус: {{ status }}</p>
+        <p><strong>Статус:</strong> {{ status }}</p>
 
-    <a href="{% url 'cart:cart_detail' %}">Повернутись до кошику</a>
-    <a href="{% url 'checkout:orders_history' %}">Переглянути історію замовлень</a>
+        <a href="{% url 'product:product_list' %}" class="btn btn-outline-secondary me-2">Повернутись до товарів</a>
+        <a href="{% url 'checkout:orders_history' %}" class="btn btn-primary">Переглянути історію замовлень</a>
+      </div>
+    </div>
 
 {% endblock %}
