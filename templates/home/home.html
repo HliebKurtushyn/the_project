@@ -1,21 +1,26 @@
 {% extends 'base.html' %}
 {% load cache %}
     {% block content %}
-        {% cache 600 home_product_list %}
+        {% cache 600 home_product_list current_category %}
         <h1>Товари</h1>
-        <h2>Категорії</h2>
 
-        <ul>
-        {% for c in categories %}
-            <li>{{ c.name }}</li>
-        {% endfor %}
-        </ul>
+        <div class="category-menu">
+            <a href="{% url 'home' %}">Всі товари</a>
+
+            {% for category in categories %}
+                <a href="?category={{ category.name }}"
+                   class="{% if current_category == category.name %}active{% endif %}">
+                   {{ category.name }}
+                </a>
+            {% endfor %}
+        </div>
 
         {% for p in products %}
             <hr>
             <h3>{{ p.name }}</h3>
             <p>{{ p.price }}</p>
             <p>{{ p.description }}</p>
+            <a href="{% url 'product:product_detail' p.id %}">Переглянути</a>
             <hr>
         {% endfor %}
         {% endcache %}
