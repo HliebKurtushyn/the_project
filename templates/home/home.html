@@ -4,17 +4,6 @@
         {% cache 600 home_product_list current_category %}
         <h1 class="mb-3">Товари</h1>
 
-        <div class="category-menu mb-4">
-            <a href="{% url 'home' %}" class="btn btn-sm btn-outline-secondary me-1">Всі товари</a>
-
-            {% for category in categories %}
-                <a href="?category={{ category.name }}"
-                   class="btn btn-sm btn-outline-secondary me-1 {% if current_category == category.name %}active{% endif %}">
-                   {{ category.name }}
-                </a>
-            {% endfor %}
-        </div>
-
         <div class="row g-4">
         {% for p in products %}
             <div class="col-12 col-md-6 col-lg-4">

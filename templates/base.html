@@ -21,7 +21,7 @@
         <a class="navbar-brand d-flex align-items-center" href="{% url 'home:home' %}">
           <span class="text-white">the_project</span>
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar" aria-controls="#mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -32,6 +32,13 @@
           </form>
 
           <ul class="navbar-nav mb-2 mb-lg-0 align-items-lg-center">
+            <!-- Added categories offcanvas trigger -->
+            <li class="nav-item">
+              <button class="btn btn-link nav-link text-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#categoriesOffcanvas" aria-controls="categoriesOffcanvas">
+                Категорії
+              </button>
+            </li>
+
             <li class="nav-item"><a class="nav-link" href="{% url 'product:product_list' %}">Товари</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'cart:cart_detail' %}">Кошик</a></li>
             <li class="nav-item"><a class="nav-link" href="{% url 'checkout:orders_history' %}">Замовлення</a></li>
@@ -54,9 +61,47 @@
       </div>
     </footer>
 
+    <!-- Offcanvas panel for categories (populated by JS) -->
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="categoriesOffcanvas" aria-labelledby="categoriesOffcanvasLabel">
+      <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="categoriesOffcanvasLabel">Категорії</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+        <div id="categories-list" class="list-group">
+          {% if categories %}
+            {% for c in categories %}
+              {% comment %}Highlight active category if provided in context{% endcomment %}
+              {% if current_category and current_category == c.name %}
+                <a class="list-group-item list-group-item-action active d-flex justify-content-between align-items-center" href="{% url 'product:product_list' %}?category={{ c.name|urlencode }}">
+              {% else %}
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" href="{% url 'product:product_list' %}?category={{ c.name|urlencode }}">
+              {% endif %}
+                 {{ c.name }}
+                 {% with c.products.count as cnt %}
+                   {% if cnt %}
+                     <span class="badge bg-secondary rounded-pill ms-2">{{ cnt }}</span>
+                   {% endif %}
+                 {% endwith %}
+              </a>
+            {% empty %}
+              <p class="text-muted">Категорій немає</p>
+            {% endfor %}
+          {% else %}
+            <!-- JS will render category links here -->
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    {# Provide a hook where your context processor can place JSON: prefer categories_json (a JSON string). #}
+    {% if categories_json %}
+      <script id="categories-data" type="application/json">{{ categories_json|safe }}</script>
+    {% endif %}
+
     {% block js_conn %}
         <!-- Bootstrap JS bundle (CDN) -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="" crossorigin="anonymous"></script>
+        <script src="{% static 'js/custom.js' %}"></script>
     {% endblock %}
 </body>
 </html>
