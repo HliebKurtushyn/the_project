@@ -1,16 +1,23 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>Історія замовлень</h1>
+    <h1 class="mb-3">Історія замовлень</h1>
     {% if orders %}
+        <div class="row g-3">
         {% for record in orders %}
-            <p>Номер замовлення:{{ record.order_id }}</p>
-            <p>Загальна вартість: ${{ record.total_price }}</p>
-            <p>Статус: {{ record.status }}</p>
-            <p>Замовлено: {{ record.created_at }}</p>
-            <p>-------------------------------------------------</p>
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Номер замовлення: {{ record.order_id }}</h5>
+                        <p>Загальна вартість: ${{ record.total_price }}</p>
+                        <p>Статус: {{ record.status }}</p>
+                        <p>Замовлено: {{ record.created_at }}</p>
+                    </div>
+                </div>
+            </div>
         {% endfor %}
+        </div>
     {% else %}
-        <p>Немає інформації про історію замовлень</p>
+        <div class="alert alert-secondary">Немає інформації про історію замовлень</div>
     {% endif %}
 {% endblock %}
