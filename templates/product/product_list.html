@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container">
-    {% cache 600 product_list_page current_category %}
+    {% cache 600 product_list_page current_category search %}
     <h1 class="mb-4">Наші товари</h1>
     <div class="row g-4">
         {% for product in products %}
