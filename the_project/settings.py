@@ -63,33 +63,17 @@ MIDDLEWARE = [
 ROOT_URLCONF = "the_project.urls"
 
 TEMPLATES = [
-    # 1. Твій новий рушій Jinja2
     {
         "BACKEND": "django.template.backends.jinja2.Jinja2",
         "DIRS": [BASE_DIR / "templates"],
         "APP_DIRS": True,
         "OPTIONS": {
-            "environment": "the_project.jinja2.environment",
             "context_processors": [
-                "django.template.context_processors.debug",
                 "django.template.context_processors.request",
+                "django.template.context_processors.debug",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.context_processors.recently_viewed",
-            ],
-        },
-    },
-    # 2. СТАНДАРТНИЙ DjangoTemplates (обов'язково для адмінки)
-    {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.debug",
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
             ],
         },
     },
