@@ -27,14 +27,16 @@ def product_detail_view(request, id):
 def product_list_view(request):
     products = Product.objects.all()
 
-    # Support filtering by category via ?category=<name>
+    search = request.GET.get("search")
+    if search:
+        products = products.filter(name__icontains=search)
+
     category_name = request.GET.get("category")
     if category_name:
-        # case-insensitive match on category name (keeps existing behavior in `home.views.home`)
         products = products.filter(category__name__iexact=category_name)
 
     return render(
         request,
         "product/product_list.html",
-        {"products": products, "current_category": category_name},
+        {"products": products, "current_category": category_name, "search": search},
     )
