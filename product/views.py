@@ -26,4 +26,15 @@ def product_detail_view(request, id):
 @cache_page_anonymous(60 * 10)
 def product_list_view(request):
     products = Product.objects.all()
-    return render(request, "product/product_list.html", {"products": products})
+
+    # Support filtering by category via ?category=<name>
+    category_name = request.GET.get("category")
+    if category_name:
+        # case-insensitive match on category name (keeps existing behavior in `home.views.home`)
+        products = products.filter(category__name__iexact=category_name)
+
+    return render(
+        request,
+        "product/product_list.html",
+        {"products": products, "current_category": category_name},
+    )
