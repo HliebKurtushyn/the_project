@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load cache %}
+{% load cache static %}
 
 {% block title %}<title> Товар - {{ product.name }}</title>{% endblock %}
 
@@ -9,6 +9,8 @@
         <div class="col-md-6">
             {% if product.image %}
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" class="img-fluid rounded" style="max-height:600px; object-fit:cover; width:100%">
+            {% else %}
+                <img src="{% static 'products/no_image.svg' %}" alt="No image" class="img-fluid rounded" style="max-height:600px; object-fit:cover; width:100%">
             {% endif %}
         </div>
         <div class="col-md-6">
